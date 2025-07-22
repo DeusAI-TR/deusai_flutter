@@ -11,12 +11,18 @@ class ImageConstants {
 
   final lottieAssets = _Lottie();
   final svgAssets = _SVG();
-
+  final iconAssets = _Icon();
   //final String example = 'png/example'.toPNG;
 }
 
 class _SVG {
   //final String example = 'svg/example'.toSVG;
+  final String logo = 'svg/logo'.toSVG;
+}
+
+class _Icon {
+  //final String example = 'svg/example'.toSVG;
+  final String google = 'icons/google'.toSVG;
 }
 
 class _Lottie {

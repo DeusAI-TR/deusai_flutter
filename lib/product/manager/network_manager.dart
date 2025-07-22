@@ -79,7 +79,7 @@ class NetworkManager {
       message = responseData['errorMessage'];
     }
     log('$errorPoint FAILED | Status Code: $error');
-    print('$errorPoint -> ${(DateTime.now().difference(time)).inMilliseconds} ms');
+    log('$errorPoint -> ${(DateTime.now().difference(time)).inMilliseconds} ms');
     return SimpleResult(isSuccess: false, errorMessage: message);
   }
 

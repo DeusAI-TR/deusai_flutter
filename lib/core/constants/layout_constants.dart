@@ -5,6 +5,7 @@ abstract class LayoutConstants {
   static const size0 = 0.0;
   static const size2 = 2.0;
   static const size4 = 4.0;
+  static const size6 = 6.0;
   static const size8 = 8.0;
   static const size10 = 10.0;
   static const size12 = 12.0;
@@ -59,6 +60,7 @@ abstract class LayoutConstants {
   // ************* Empty Height ************* //
   static const emptyHeight2 = SizedBox(height: size2);
   static const emptyHeight4 = SizedBox(height: size4);
+  static const emptyHeight6 = SizedBox(height: size6);
   static const emptyHeight8 = SizedBox(height: size8);
   static const emptyHeight12 = SizedBox(height: size12);
   static const emptyHeight16 = SizedBox(height: size16);
