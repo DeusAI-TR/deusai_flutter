@@ -5,6 +5,7 @@ enum NavigationEnums {
   register,
   registerVerify,
   postRegister,
+  mainScaffold,
 }
 
 extension NavigationConstantsValue on NavigationEnums {
@@ -15,6 +16,7 @@ extension NavigationConstantsValue on NavigationEnums {
     NavigationEnums.preRegister => '/pre-register',
     NavigationEnums.registerVerify => '/register/verify',
     NavigationEnums.postRegister => '/post-register',
+    NavigationEnums.mainScaffold => '/main-scaffold',
   };
 
   NavigationEnums normalValue(String? val) => switch (val) {
@@ -24,6 +26,7 @@ extension NavigationConstantsValue on NavigationEnums {
     '/pre-register' => NavigationEnums.preRegister,
     '/register/verify' => NavigationEnums.registerVerify,
     '/post-register' => NavigationEnums.postRegister,
-    _ => throw Exception('$val not found in $this'),
+    '/main-scaffold' => NavigationEnums.mainScaffold,
+    _ => throw Exception(' [38;5;9m$val not found in $this [0m'),
   };
 }

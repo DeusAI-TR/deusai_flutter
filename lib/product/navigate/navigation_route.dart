@@ -1,4 +1,5 @@
 import 'package:alfai/feature/login/login_view.dart';
+import 'package:alfai/feature/main_scaffold/main_scaffold_view.dart';
 import 'package:alfai/feature/register/post_register/post_register_view.dart';
 import 'package:alfai/feature/register/pre_register/pre_register_view.dart';
 import 'package:alfai/feature/register/register/register_view.dart';
@@ -14,7 +15,6 @@ class NavigationRoute {
         return _normalNavigate(const SplashView());
       case NavigationEnums.login:
         return _normalNavigate(const LoginView());
-
       case NavigationEnums.preRegister:
         return _normalNavigate(const PreRegisterView());
       case NavigationEnums.register:
@@ -23,8 +23,8 @@ class NavigationRoute {
         return _normalNavigate(const RegisterVerifyView());
       case NavigationEnums.postRegister:
         return _normalNavigate(const PostRegisterView(state: PostRegisterState.success));
-      // default:
-      //   throw Exception(' [38;5;9m$this not found [0m');
+      case NavigationEnums.mainScaffold:
+        return _normalNavigate(const MainScaffoldView());
     }
   }
 

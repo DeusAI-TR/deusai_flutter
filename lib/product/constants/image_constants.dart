@@ -18,6 +18,13 @@ class ImageConstants {
 class _SVG {
   //final String example = 'svg/example'.toSVG;
   final String logo = 'svg/logo'.toSVG;
+  final String upgrade = 'icons/Icon-18'.toSVG;
+  final String upload = 'icons/Icon-19'.toSVG;
+  final String home = 'icons/Icon-10'.toSVG;
+  final String discory = 'icons/Icon-11'.toSVG;
+  final String profile = 'icons/Icon-12'.toSVG;
+  final String surpriseMe = 'icons/Icon-5'.toSVG;
+  final String delete = 'icons/Icon-14'.toSVG;
 }
 
 class _Icon {
