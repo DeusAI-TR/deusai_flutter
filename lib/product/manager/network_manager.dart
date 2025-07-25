@@ -1,40 +1,50 @@
 import 'dart:developer';
-import 'package:flutter/foundation.dart';
+
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
+import 'package:injectable/injectable.dart';
+
 import '../../core/models/simple_result.dart';
 import '../constants/product_constants.dart';
-import '../models/network/converter.dart';
 
 enum RequestType { get, post, put, delete, patch }
 
+typedef FromJson<T> = T Function(Map<String, dynamic> json);
+
+@singleton
 class NetworkManager {
-  static NetworkManager? _instance;
-  static NetworkManager get instance {
-    _instance ??= NetworkManager._init();
-    return _instance!;
-  }
-
-  NetworkManager._init();
-
   final Dio _dio = Dio(BaseOptions(baseUrl: ProductConstants.instance.apiUrl, contentType: 'application/json'));
 
-  Future<SimpleResult> request<T>(
+  void setToken(String token) {
+    _dio.options.headers['Authorization'] = 'Bearer $token';
+  }
+
+  Future<Object?> request<T>(
     RequestType requestType,
     String path, {
+    String? baseUrl,
+    FromJson<T>? fromJson,
     dynamic data,
     dynamic model,
     Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? headers,
     bool isBaseResponse = true,
     isFile = false,
   }) async {
     var time = DateTime.now();
-    data ??= {};
     try {
+      data ??= {};
       Object? body = data is Map || data is FormData ? data : data.toJson();
-
+      // _dio..options.
+      if (baseUrl != null) {
+        _dio.options.baseUrl = baseUrl;
+      }
+      if (headers != null) {
+        _dio.options.headers.addAll(headers);
+      }
       var response = await _dio.request(
         path,
-        data: requestType == RequestType.get ? null : body,
+        data: body,
         queryParameters: queryParameters,
         options: Options(contentType: isFile ? 'multipart/form-data' : 'application/json', method: requestType.name),
       );
@@ -42,11 +52,12 @@ class NetworkManager {
       if (kDebugMode) {
         print('$path -> ${(DateTime.now().difference(time)).inMilliseconds} ms');
       }
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        // return SimpleResult.fromJson(response.data);
         if (isBaseResponse) {
-          return _simpleResultConverter<T>(response.data);
+          return _simpleResultConverter<T>(response.data, fromJson);
         } else {
-          return SimpleResult.fromJson(response.data);
+          return fromJson!(response.data);
         }
       } else {
         return _showError<T>(
@@ -57,6 +68,9 @@ class NetworkManager {
         );
       }
     } on DioException catch (dioError) {
+      if (kDebugMode) {
+        print(dioError.toString());
+      }
       return _showError<T>(
         '$path ${requestType.name}',
         'Error: ${dioError.error} | Status Message: ${dioError.message}',
@@ -64,43 +78,49 @@ class NetworkManager {
         time,
       );
     } catch (error) {
-      return _showError(
-        '$path ${requestType.name}',
-        error,
-        null,
-        time,
-      );
+      if (kDebugMode) {
+        print(error.toString());
+      }
+      return _showError('$path ${requestType.name}', error, null, time);
     }
   }
 
   SimpleResult<T> _showError<T>(String errorPoint, dynamic error, dynamic responseData, DateTime time) {
-    String? message = 'Sunucu ile ilgili bir hata oluştu. Lütfen daha sonra tekrar deneyiniz';
+    String? message = 'Sunucu ile ilgili bir hata oluştu. Lütfen daha sonra tekrar deneyiniz.';
     if (responseData != null && responseData is Map && responseData.containsKey('errorMessage')) {
       message = responseData['errorMessage'];
     }
     log('$errorPoint FAILED | Status Code: $error');
-    log('$errorPoint -> ${(DateTime.now().difference(time)).inMilliseconds} ms');
-    return SimpleResult(isSuccess: false, errorMessage: message);
+    if (kDebugMode) {
+      print('$errorPoint -> ${(DateTime.now().difference(time)).inMilliseconds} ms');
+    }
+    return SimpleResult(status: false, message: message);
   }
 
-  SimpleResult _simpleResultConverter<T>(dynamic data) {
+  SimpleResult _simpleResultConverter<T>(dynamic data, FromJson<T>? fromJson) {
     final baseResponse = SimpleResult.fromJson(data);
-    if (baseResponse.isSuccess) {
+    if (baseResponse.status) {
       if (baseResponse.data != null) {
         if (baseResponse.data is List) {
           var list = <T>[];
           for (var element in (baseResponse.data as List)) {
-            list.add((T as Converter).fromJson(element));
+            list.add(fromJson!(element));
           }
-          return SimpleResult<List<T>>(isSuccess: true, data: list);
+          return SimpleResult<List<T>>(status: true, data: list);
         } else {
-          return SimpleResult<T>(isSuccess: true, data: (T as Converter).fromJson(baseResponse.data));
+          return SimpleResult<T>(status: true, data: fromJson!(baseResponse.data));
         }
       } else {
-        return SimpleResult(isSuccess: false);
+        return SimpleResult(status: false);
       }
     } else {
-      return SimpleResult(isSuccess: false);
+      return SimpleResult(status: false, message: baseResponse.message);
     }
   }
+}
+
+class NetworkInterface {
+  factory NetworkInterface.fromJson(Map<String, dynamic> json) => throw UnimplementedError();
+
+  fromJson(Map<String, dynamic> json) => NetworkInterface.fromJson(json);
 }

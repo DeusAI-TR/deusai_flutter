@@ -11,8 +11,6 @@ import '../../core/constants/layout_constants.dart';
 import '../../product/theme/app_text_styles.dart';
 import '../../product/theme/app_colors.dart';
 import '../../product/lang/locale_keys.g.dart';
-import '../../core/services/navigation_service.dart';
-import '../../product/navigate/navigation_enums.dart';
 
 class LoginView extends StatelessWidget {
   const LoginView({super.key});
@@ -23,7 +21,7 @@ class LoginView extends StatelessWidget {
       viewModelBuilder: () => LoginViewModel(),
       builder: (context, viewModel, child) {
         return Scaffold(
-          appBar: const CenterLogoAppBar(),
+          appBar: const LogoAppBar(),
           body: Padding(
             padding: LayoutConstants.padding20All,
             child: SingleChildScrollView(
@@ -78,9 +76,8 @@ class LoginView extends StatelessWidget {
                   // Giriş yap butonu
                   CustomButton(
                     text: LocaleKeys.login_button.tr(),
-                    onPressed: () {},
-                    isLoading: false,
-                    enabled: viewModel.emailController.text.isNotEmpty && viewModel.passwordController.text.isNotEmpty,
+                    onPressed: () async => await viewModel.login(context),
+                    enabled: viewModel.isFormValid,
                   ),
                   LayoutConstants.emptyHeight16,
                   // Divider
@@ -101,9 +98,7 @@ class LoginView extends StatelessWidget {
                         style: AppTextStyles.textSmRegular.copyWith(color: AppColors.gray400),
                       ),
                       GestureDetector(
-                        onTap: () {
-                          NavigationService.instance.navigateToPage(path: NavigationEnums.preRegister.rawValue);
-                        },
+                        onTap: () => viewModel.navigateToRegister(context),
                         child: Text(
                           LocaleKeys.login_register.tr(),
                           style: AppTextStyles.textSmBold.copyWith(color: AppColors.purple500),

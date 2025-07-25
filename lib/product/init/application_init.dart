@@ -1,9 +1,15 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
+import 'package:injectable/injectable.dart';
 
 import 'shared_manager.dart';
 import 'timezone_init.dart';
+import 'application_init.config.dart';
+
+@InjectableInit()
+void configureDependencies() => GetIt.instance.init();
 
 class ApplicationInit {
   Future<void> firstlyInit() async {
@@ -13,6 +19,7 @@ class ApplicationInit {
 
     TimezoneInit().init();
     SharedManager.instance.initSharedManager();
+    configureDependencies();
   }
 
   /// EasyLocalization Initialization
@@ -22,3 +29,5 @@ class ApplicationInit {
   }
 
 }
+
+GetIt get locator => GetIt.I;

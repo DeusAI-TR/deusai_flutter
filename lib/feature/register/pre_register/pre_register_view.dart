@@ -1,6 +1,4 @@
-import 'package:alfai/core/services/navigation_service.dart';
 import 'package:alfai/feature/widgets/center_logo_app_bar.dart';
-import 'package:alfai/product/navigate/navigation_enums.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -23,7 +21,7 @@ class PreRegisterView extends StatelessWidget {
       viewModelBuilder: () => PreRegisterViewModel(),
       builder: (context, viewModel, child) {
         return Scaffold(
-          appBar: const CenterLogoAppBar(),
+          appBar: const LogoAppBar(),
           body: Padding(
             padding: LayoutConstants.padding20All,
             child: SingleChildScrollView(
@@ -54,9 +52,7 @@ class PreRegisterView extends StatelessWidget {
                   LayoutConstants.emptyHeight24,
                   CustomButton(
                     text: LocaleKeys.register_send_code.tr(),
-                    onPressed: () {
-                      NavigationService.instance.navigateToPage(path: NavigationEnums.registerVerify.rawValue);
-                    },
+                    onPressed: () async => viewModel.navigateToRegisterVerify(),
                     enabled: viewModel.isEmailNotEmpty,
                   ),
                   LayoutConstants.emptyHeight16,
@@ -75,9 +71,7 @@ class PreRegisterView extends StatelessWidget {
                         style: AppTextStyles.textSmRegular.copyWith(color: AppColors.gray400),
                       ),
                       GestureDetector(
-                        onTap: () {
-                          NavigationService.instance.pop();
-                        },
+                        onTap: viewModel.navigateToLogin,
                         child: Text(
                           LocaleKeys.register_login.tr(),
                           style: AppTextStyles.textSmBold.copyWith(color: AppColors.purple500),

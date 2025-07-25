@@ -1,13 +1,13 @@
 class SimpleResult<T> {
-  final bool isSuccess;
-  final String? errorMessage;
+  final bool status;
+  final String? message;
   final T? data;
 
-  SimpleResult({required this.isSuccess, this.errorMessage, this.data});
+  SimpleResult({required this.status, this.message, this.data});
 
   factory SimpleResult.fromJson(Map<String, dynamic> json) => SimpleResult(
-        isSuccess: json["isSuccess"],
-        errorMessage: json["errorMessage"],
+        status: json["status"] ?? json["success"] ?? false,
+        message: json["message"],
         data: json["data"],
       );
 }

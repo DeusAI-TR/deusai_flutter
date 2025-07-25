@@ -18,7 +18,7 @@ class PostRegisterView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CenterLogoAppBar(),
+      appBar: const LogoAppBar(),
       body: Padding(
         padding: LayoutConstants.padding20All,
         child: Column(
@@ -54,7 +54,7 @@ class PostRegisterView extends StatelessWidget {
                   state == PostRegisterState.success
                       ? LocaleKeys.register_success_button.tr()
                       : LocaleKeys.register_error_button.tr(),
-              onPressed: () {},
+              onPressed: () async {},
             ),
           ],
         ),

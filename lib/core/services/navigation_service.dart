@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
 
 abstract class INavigationService {
   Future<T?> navigateToPage<T>({required String path, Object? data});
@@ -6,14 +7,8 @@ abstract class INavigationService {
   void pop<T extends Object?>([T? object]);
 }
 
+@singleton
 class NavigationService implements INavigationService {
-  static NavigationService? _instace;
-  static NavigationService get instance {
-    _instace ??= NavigationService._init();
-    return _instace!;
-  }
-
-  NavigationService._init();
 
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 

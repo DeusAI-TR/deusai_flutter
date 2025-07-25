@@ -1,5 +1,3 @@
-import 'package:alfai/core/services/navigation_service.dart';
-import 'package:alfai/product/navigate/navigation_enums.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -21,7 +19,7 @@ class RegisterVerifyView extends StatelessWidget {
       viewModelBuilder: () => RegisterVerifyViewModel(),
       builder: (context, viewModel, child) {
         return Scaffold(
-          appBar: const CenterLogoAppBar(),
+          appBar: const LogoAppBar(),
           body: Padding(
             padding: LayoutConstants.padding20All,
             child: SingleChildScrollView(
@@ -59,9 +57,7 @@ class RegisterVerifyView extends StatelessWidget {
                   LayoutConstants.emptyHeight24,
                   CustomButton(
                     text: LocaleKeys.register_code_button.tr(),
-                    onPressed: () {
-                      NavigationService.instance.navigateToPage(path: NavigationEnums.register.rawValue);
-                    },
+                    onPressed: () async => viewModel.navigateToRegister(),
                     enabled: viewModel.isCodeValid,
                   ),
                   LayoutConstants.emptyHeight16,

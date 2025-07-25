@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
         theme: context.read<ThemeManager>().currentTheme,
-        navigatorKey: NavigationService.instance.navigatorKey,
+        navigatorKey: locator<NavigationService>().navigatorKey,
         onGenerateRoute: NavigationRoute().generateRoute,
         //home: MyHomePage(),
       ),

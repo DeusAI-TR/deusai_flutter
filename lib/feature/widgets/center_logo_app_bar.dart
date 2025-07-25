@@ -2,18 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../product/constants/image_constants.dart';
 
-class CenterLogoAppBar extends StatelessWidget implements PreferredSizeWidget {
+class LogoAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double height;
   final Color? backgroundColor;
   final Widget? leading;
   final List<Widget>? actions;
+  final bool centerTitle;
 
-  const CenterLogoAppBar({
+  const LogoAppBar({
     super.key,
     this.height = 56,
     this.backgroundColor,
     this.leading,
     this.actions,
+    this.centerTitle = true,
   });
 
   @override
@@ -21,7 +23,7 @@ class CenterLogoAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: backgroundColor ?? Theme.of(context).appBarTheme.backgroundColor,
       elevation: 0,
-      centerTitle: true,
+      centerTitle: centerTitle,
       leading: leading,
       actions: actions,
       title: SvgPicture.asset(
